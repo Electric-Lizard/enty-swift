@@ -1,0 +1,24 @@
+{
+  "name": "enty-swift-ui",
+  "authors": [
+    "Electric-Lizard <Koldasov3@gmail.com>"
+  ],
+  "description": "Enty Swift: client-side",
+  "main": [
+      "./public/javascripts/clientws.js",
+      "./public/stylesheets/style.css"
+  ],
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}

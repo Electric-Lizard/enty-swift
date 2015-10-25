@@ -1,0 +1,15 @@
+extends layout
+//- @var {Field} field
+
+block scripts
+  script(src='/javascripts/clientws.js')
+block content
+  #field(style={width: field.width + 'px', height: field.height + 'px', position: 'relative', border: '1px solid'})
+    - var zoneStyle = {width: field.playerWidth + 'px', height: field.height + 'px', display: 'inline-block', position: 'absolute'};
+    - var zoneStyle1 = JSON.parse(JSON.stringify(zoneStyle));
+    - zoneStyle1['border-right'] = '1px solid';
+    #field-zone-1.field-zone(style=zoneStyle1)
+    - var zoneStyle2 = zoneStyle;
+    - zoneStyle2['border-left'] = '1px solid';
+    - zoneStyle.right = 0;
+    #field-zone-2.field-zone(style=zoneStyle2)
