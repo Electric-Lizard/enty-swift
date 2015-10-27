@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('enty-swift-ui:server');
 var http = require('http');
-var wsEntry = require('../websocket-entry/ESWSServer');
+var wsEntry = require('../core/server/socket/ESWSServer');
 
 /**
  * Get port from environment and store in Express.

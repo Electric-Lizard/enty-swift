@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Field = require('../client-src/models/field.js');
+var Field = require('../core/model/field.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

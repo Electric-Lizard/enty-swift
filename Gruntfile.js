@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          './public/javascripts/clientws.js': ['./client-src/clientws.js']
+          './public/javascripts/clientws.js': ['./core/client/enty-swift-client.js']
         }
       }
     }
