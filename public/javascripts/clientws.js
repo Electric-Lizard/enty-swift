@@ -25,7 +25,7 @@ $(function() {
       )
 
   socket.on('playerMove', function(info) {
-    field.movePlayer(info.fieldSide);
+    field.movePlayer(info);
   });
 });
 
@@ -42,6 +42,7 @@ class FieldPlayer {
 
     this.model = opts.model;
     this.id = this.model.id;
+    this.coordShift = opts.coordShift || {x: 0, y: 0};
     this.$el = opts.$el || 
       $('<div>').css({
         backgroundColor: '#999',
@@ -55,14 +56,14 @@ class FieldPlayer {
     if (model) _.extend(this.model, model);
 
     this.$el.css({
-      left: model.coords.x,
-      top: model.coords.y
+      left: this.model.coords.x + this.coordShift.x,
+      top: this.model.coords.y + this.coordShift.y
     });
 
-    this.attr('id', 'field-player-' + model.id);
+    this.$el.attr('id', 'field-player-' + this.model.id);
   }
 }
-util.inherits(FieldPlayer, EventEmitter);
+FieldPlayer.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = FieldPlayer;
 
@@ -76,17 +77,21 @@ let FieldPlayer = require('./field-player.js');
 
 class FieldSide {
   constructor(opts) {
-    EventEmitter.call(this);
     opts = opts || {};
 
     this.model = opts.model;
     this.id = this.model.id;
     this.$el = opts.$el;
     this.players = [];
-    this.model.players.forEach(pModel => this.addPlayer(new FieldPlayer({model: pModel})));
     this.areaOffset = null;
-
     this.discoverOffset();
+    this.model.players.forEach(pModel => {
+      this.addPlayer(new FieldPlayer({
+        model: pModel,
+        coordShift: {x: this.areaOffset.left - 10, y: this.areaOffset.top - 10}
+      }));
+    });
+
     this.delegateEvents();
   }
 
@@ -96,7 +101,9 @@ class FieldSide {
         x: e.pageX - this.areaOffset.left,
         y: e.pageY - this.areaOffset.top
       };
-      this.emit('playerMove', {player: this.players[0]});//sick!
+      let player = this.players[0];//sick!
+      player.coords = coords;
+      this.emit('playerMove', {player: player});
     });
   }
 
@@ -120,8 +127,7 @@ class FieldSide {
     return _.findWhere(this.players, {id: id});
   }
 }
-util.inherits(FieldSide, EventEmitter);
-_.extend(FieldSide.prototype.__proto__, EventEmitter.prototype);
+FieldSide.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = FieldSide;
 
@@ -135,7 +141,6 @@ let FieldSide = require('./field-side.js');
 
 class Field {
   constructor(opts) {
-    EventEmitter.call(this);
     opts = opts || {};
     this.sides = [];
 
@@ -160,7 +165,7 @@ class Field {
   }
 
   movePlayer(info) {
-    let side = this.side(info.fieldSide.id);
+    let side = this.fieldSide(info.fieldSide.id);
     //TODO: check for existance
     side.movePlayer(info.player);
   }
@@ -169,8 +174,7 @@ class Field {
     return _.findWhere(this.sides, {id: id});
   }
 }
-
-util.inherits(Field, EventEmitter);
+Field.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = Field;
 

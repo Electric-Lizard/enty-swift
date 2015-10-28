@@ -24,6 +24,6 @@ $(function() {
       )
 
   socket.on('playerMove', function(info) {
-    field.movePlayer(info.fieldSide);
+    field.movePlayer(info);
   });
 });

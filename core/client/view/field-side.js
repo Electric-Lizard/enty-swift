@@ -7,17 +7,21 @@ let FieldPlayer = require('./field-player.js');
 
 class FieldSide {
   constructor(opts) {
-    EventEmitter.call(this);
     opts = opts || {};
 
     this.model = opts.model;
     this.id = this.model.id;
     this.$el = opts.$el;
     this.players = [];
-    this.model.players.forEach(pModel => this.addPlayer(new FieldPlayer({model: pModel})));
     this.areaOffset = null;
-
     this.discoverOffset();
+    this.model.players.forEach(pModel => {
+      this.addPlayer(new FieldPlayer({
+        model: pModel,
+        coordShift: {x: this.areaOffset.left - 10, y: this.areaOffset.top - 10}
+      }));
+    });
+
     this.delegateEvents();
   }
 
@@ -27,7 +31,9 @@ class FieldSide {
         x: e.pageX - this.areaOffset.left,
         y: e.pageY - this.areaOffset.top
       };
-      this.emit('playerMove', {player: this.players[0]});//sick!
+      let player = this.players[0];//sick!
+      player.coords = coords;
+      this.emit('playerMove', {player: player});
     });
   }
 
@@ -51,7 +57,6 @@ class FieldSide {
     return _.findWhere(this.players, {id: id});
   }
 }
-util.inherits(FieldSide, EventEmitter);
-_.extend(FieldSide.prototype.__proto__, EventEmitter.prototype);
+FieldSide.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = FieldSide;

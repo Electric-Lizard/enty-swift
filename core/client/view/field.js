@@ -7,7 +7,6 @@ let FieldSide = require('./field-side.js');
 
 class Field {
   constructor(opts) {
-    EventEmitter.call(this);
     opts = opts || {};
     this.sides = [];
 
@@ -32,7 +31,7 @@ class Field {
   }
 
   movePlayer(info) {
-    let side = this.side(info.fieldSide.id);
+    let side = this.fieldSide(info.fieldSide.id);
     //TODO: check for existance
     side.movePlayer(info.player);
   }
@@ -41,7 +40,6 @@ class Field {
     return _.findWhere(this.sides, {id: id});
   }
 }
-
-util.inherits(Field, EventEmitter);
+Field.prototype.__proto__ = EventEmitter.prototype;
 
 module.exports = Field;
