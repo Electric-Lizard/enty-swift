@@ -2,7 +2,7 @@
 let util = require('util');
 let EventEmitter = require('events').EventEmitter;
 let _ = require('underscore');
-let FieldSide = require('./field-side.js');
+let FieldZone = require('./field-zone.js');
 
 
 class Field {
@@ -10,33 +10,33 @@ class Field {
     opts = opts || {};
     this.sides = [];
 
-    if (util.isArray(opts.fieldSideModels)) {
-      opts.fieldSideModels.forEach((sModel, index) => {
+    if (util.isArray(opts.fieldZoneModels)) {
+      opts.fieldZoneModels.forEach((sModel, index) => {
         let $sideEl =
-          util.isArray(opts.fieldSideElements) &&
-          typeof opts.fieldSideElements[index] != 'undefined' ? 
-          opts.fieldSideElements[index] :
+          util.isArray(opts.fieldZoneElements) &&
+          typeof opts.fieldZoneElements[index] != 'undefined' ? 
+          opts.fieldZoneElements[index] :
           null;
-        this.addFieldSide(new FieldSide({model: sModel, $el: $sideEl}));
+        this.addFieldZone(new FieldZone({model: sModel, $el: $sideEl}));
       })
     }
   }
 
-  addFieldSide(fieldSide) {
-    fieldSide.on('playerMove',
+  addFieldZone(fieldZone) {
+    fieldZone.on('playerMove',
         e => {
-          this.emit('playerMove', _.extend(e, {fieldSide: fieldSide}));
+          this.emit('playerMove', _.extend(e, {fieldZone: fieldZone}));
         });
-    this.sides.push(fieldSide);
+    this.sides.push(fieldZone);
   }
 
   movePlayer(info) {
-    let side = this.fieldSide(info.fieldSide.id);
+    let side = this.fieldZone(info.fieldZone.id);
     //TODO: check for existance
     side.movePlayer(info.player);
   }
 
-  fieldSide(id) {
+  fieldZone(id) {
     return _.findWhere(this.sides, {id: id});
   }
 }

@@ -5,7 +5,7 @@ let _ = require('underscore');
 let FieldPlayer = require('./field-player.js');
 
 
-class FieldSide {
+class FieldZone {
   constructor(opts) {
     opts = opts || {};
 
@@ -57,6 +57,6 @@ class FieldSide {
     return _.findWhere(this.players, {id: id});
   }
 }
-FieldSide.prototype.__proto__ = EventEmitter.prototype;
+FieldZone.prototype.__proto__ = EventEmitter.prototype;
 
-module.exports = FieldSide;
+module.exports = FieldZone;

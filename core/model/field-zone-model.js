@@ -1,7 +1,7 @@
 "use strict";
 
 
-class FieldSideModel {
+class FieldZoneModel {
   constructor(opts) {
     if (!opts) throw Error('No arguments was specified');
 
@@ -10,4 +10,4 @@ class FieldSideModel {
   }
 }
 
-module.exports = FieldSideModel;
+module.exports = FieldZoneModel;

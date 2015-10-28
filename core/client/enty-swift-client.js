@@ -1,7 +1,7 @@
 "use strict"
 let socket = require('socket.io-client')({path: '/socket'});
 let Field = require('./view/field.js');
-let FieldSideModel = require('../model/field-side-model.js');
+let FieldSideModel = require('../model/field-zone-model.js');
 let FieldPlayerModel = require('../model/field-player-model.js');
 
 $(function() {
@@ -15,8 +15,8 @@ $(function() {
   ];
 
   let field = new Field({
-    fieldSideModels: tmpSideModels,
-    fieldSideElements: [$zone1, $zone2]
+    fieldZoneModels: tmpSideModels,
+    fieldZoneElements: [$zone1, $zone2]
   });
 
   field.on('playerMove', e => 
